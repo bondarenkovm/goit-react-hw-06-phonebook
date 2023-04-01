@@ -33,8 +33,7 @@ const ContactForm = () => {
   const contacts = useSelector(getContacts);
 
   const handleSubmit = (values, { resetForm }) => {
-    const isContactExists = contacts.some(({ name }) => name === values.name);
-    if (isContactExists) {
+    if (contacts.some(({ name }) => name === values.name)) {
       toast(`${values.name} is alreary in contacts`, {
         style: {
           background: '#ca1616',
@@ -44,7 +43,6 @@ const ContactForm = () => {
       resetForm();
       return;
     }
-
     dispatch(addContact(values));
     resetForm();
   };

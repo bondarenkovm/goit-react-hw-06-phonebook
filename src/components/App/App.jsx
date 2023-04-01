@@ -19,7 +19,6 @@ function App() {
       />
     </Container>
   );
-  // }
 }
 
 export { App };
