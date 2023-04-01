@@ -1,5 +1,8 @@
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+
+// import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { Label, Button, Form, ErrorMessage } from './ContactForm.styled';
@@ -25,13 +28,11 @@ const FormSchema = Yup.object().shape({
     .trim(),
 });
 
-const ContactForm = ({ formSubmit }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, { resetForm }) => {
-    // console.log(values);
-    formSubmit({
-      id: nanoid(5),
-      ...values,
-    });
+    dispatch(addContact(values));
     resetForm();
   };
 
@@ -61,65 +62,8 @@ const ContactForm = ({ formSubmit }) => {
   );
 };
 
-// class ContactForm extends Component {
-//   state = {
-//     name: '',
-//     number: '',
-//   };
-
-//   handleChange = evt => {
-//     const { name, value } = evt.currentTarget;
-//     this.setState({ [name]: value });
-//   };
-
-//   handleSubmit = evt => {
-//     evt.preventDefault();
-//     this.props.formSubmit(this.state);
-//     this.reset();
-//   };
-
-//   reset = () => {
-//     this.setState({ name: '', number: '' });
-//   };
-
-//   render() {
-//     const { name, number } = this.state;
-//     return (
-//       <Form onSubmit={this.handleSubmit}>
-//         <Label>
-//           Name:
-//           <input
-//             type="text"
-//             name="name"
-//             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-//             required
-//             value={name}
-//             onChange={this.handleChange}
-//           />
-//         </Label>
-//         <Label>
-//           Number:
-//           <input
-//             type="tel"
-//             name="number"
-//             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-//             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-//             required
-//             value={number}
-//             onChange={this.handleChange}
-//           />
-//         </Label>
-//         <Button type="submit" disabled={!name | !number}>
-//           ADD CONTACT
-//         </Button>
-//       </Form>
-//     );
-//   }
-// }
-
-ContactForm.propTypes = {
-  formSubmit: PropTypes.func.isRequired,
-};
+// ContactForm.propTypes = {
+//   formSubmit: PropTypes.func.isRequired,
+// };
 
 export { ContactForm };
