@@ -1,11 +1,11 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
-
+import { getContacts } from 'redux/selectors';
 // import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { Label, Button, Form, ErrorMessage } from './ContactForm.styled';
+import { toast } from 'react-hot-toast';
 
 const FormSchema = Yup.object().shape({
   name: Yup.string()
@@ -30,8 +30,21 @@ const FormSchema = Yup.object().shape({
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
   const handleSubmit = (values, { resetForm }) => {
+    const isContactExists = contacts.some(({ name }) => name === values.name);
+    if (isContactExists) {
+      toast(`${values.name} is alreary in contacts`, {
+        style: {
+          background: '#ca1616',
+          color: '#fff',
+        },
+      });
+      resetForm();
+      return;
+    }
+
     dispatch(addContact(values));
     resetForm();
   };
